@@ -11,7 +11,7 @@ namespace Standings.Web.Installers
         {
             container.Register(AllTypes.FromAssemblyContaining(typeof(CompetitionRepository))
                                    .Pick().If(Component.IsInSameNamespaceAs<CompetitionRepository>())
-                                   .Configure(c => c.Named(c.ServiceType.Name).LifeStyle.Singleton)
+                                   .Configure(c => c.Named(c.ServiceType.Name).LifeStyle.PerWebRequest)
                                    );
         }
     }

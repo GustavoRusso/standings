@@ -1,5 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Standings.Domain;
 using Standings.Infrastructure.Repositories;
 using Standings.Web.Models.Competition;

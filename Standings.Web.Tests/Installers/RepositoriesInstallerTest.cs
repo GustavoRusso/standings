@@ -33,12 +33,12 @@ namespace Standings.Web.Tests.Installers
         }
 
         [TestMethod]
-        public void Install_RegisterAllRepositoriesAsSingleton()
+        public void Install_RegisterAllRepositoriesWithLifestyleTypePerWebRequest()
         {
             IWindsorContainer containerWithControllers = new WindsorContainer().Install(new RepositoriesInstaller());
 
             var nonSingletonRepositories = containerWithControllers.GetAllHandlers()
-                .Where(controller => controller.ComponentModel.LifestyleType != LifestyleType.Singleton)
+                .Where(controller => controller.ComponentModel.LifestyleType != LifestyleType.PerWebRequest)
                 .ToArray();
             Assert.AreEqual(0, nonSingletonRepositories.Length);
         }

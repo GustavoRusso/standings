@@ -1,5 +1,4 @@
-﻿using System;
-using Standings.Domain;
+﻿using Standings.Domain;
 
 namespace Standings.Infrastructure.Repositories
 {

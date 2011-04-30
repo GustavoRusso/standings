@@ -10,7 +10,7 @@ namespace Standings.Web
     // visit http://go.microsoft.com/?LinkId=9394801
     public class MvcApplication : System.Web.HttpApplication
     {
-        private static IWindsorContainer _container;
+        private static IWindsorContainer _windsorContainer;
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
@@ -31,8 +31,8 @@ namespace Standings.Web
 
         private static void BootstrapWindsorContainer()
         {
-            _container = new WindsorContainer().Install(FromAssembly.This());
-            var controllerFactory = new WindsorControllerFactory(_container.Kernel);
+            _windsorContainer = new WindsorContainer().Install(FromAssembly.This());
+            var controllerFactory = new WindsorControllerFactory(_windsorContainer.Kernel);
             ControllerBuilder.Current.SetControllerFactory(controllerFactory);
         }
 
@@ -46,7 +46,7 @@ namespace Standings.Web
 
         protected void Application_End()
         {
-            _container.Dispose();
+            _windsorContainer.Dispose();
         }
     }
 }

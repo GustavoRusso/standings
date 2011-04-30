@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rhino.Mocks;
 using Standings.Domain;
 using Standings.Infrastructure.Repositories;
 using Standings.Web.Controllers;
@@ -44,7 +42,7 @@ namespace Standings.Web.Tests.Controllers
         }
 
         [TestMethod]
-        public void CreatePOST_WhenExecuteCorrectly_RedirectToIndex()
+        public void CreateByPOST_WhenExecuteCorrectly_RedirectToIndex()
         {
             var controller = new CompetitionController();
             controller.CompetitionRepository = new CompetitionRepository();
@@ -58,7 +56,7 @@ namespace Standings.Web.Tests.Controllers
         }
 
         [TestMethod]
-        public void CreatePOST_WhenExecuteCorrectly_AddNewCompetitionToRepository()
+        public void CreateByPOST_WhenExecuteCorrectly_AddNewCompetitionToRepository()
         {
             var competitionRepository = new CompetitionRepository();
             var createCompetitionModel = new CreateCompetitionModel();

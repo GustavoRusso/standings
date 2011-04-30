@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using NHibernate;
 
 namespace Standings.Infrastructure.Repositories
 {
     public class Repository<T> : List<T>, IEnumerable
     {
+        public ISession Session { get; set; }
+
         #region Implementation of IEnumerable
 
         /// <summary>
