@@ -10,12 +10,10 @@ namespace Standings.Web.Tests.Installers
     [TestClass]
     public class PersistenceInstallerTest
     {
-        public TestContext TestContext { get; set; }
-
         [TestMethod]
         public void Install_AddFacilityOfTypePersistenceFacility()
         {
-            var stubNHibConfiguration = NHibernateHelper.GenerateStubConfiguration(TestContext.TestDir);
+            var stubNHibConfiguration = NHibernateHelper.GenerateStubConfiguration();
             var persistenceInstaller = new PersistenceInstaller(stubNHibConfiguration);
 
             IWindsorContainer container = new WindsorContainer().Install(persistenceInstaller);

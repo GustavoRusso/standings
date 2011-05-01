@@ -13,13 +13,11 @@ namespace Standings.Web.Tests.Plumbing
     [TestClass]
     public class PersistenceFacilityTest
     {
-        public TestContext TestContext { get; set; }
-
         [TestMethod]
         public void Init_RegisterComponentForISessionFactoryAsSingleton()
         {
             IWindsorContainer container = new WindsorContainer();
-            var stubNHibCong = NHibernateHelper.GenerateStubConfiguration(TestContext.TestDir);
+            var stubNHibCong = NHibernateHelper.GenerateStubConfiguration();
 
             var persistenceFacility = new PersistenceFacility(stubNHibCong);
             var facility = persistenceFacility as IFacility;
@@ -35,7 +33,7 @@ namespace Standings.Web.Tests.Plumbing
         public void Init_RegisterComponentForISessionWithLifeStylePerWebRequest()
         {
             IWindsorContainer container = new WindsorContainer();
-            var stubNHibCong = NHibernateHelper.GenerateStubConfiguration(TestContext.TestDir);
+            var stubNHibCong = NHibernateHelper.GenerateStubConfiguration();
 
             var persistenceFacility = new PersistenceFacility(stubNHibCong);
             var facility = persistenceFacility as IFacility;

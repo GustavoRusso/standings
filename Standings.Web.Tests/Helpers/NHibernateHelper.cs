@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.IO;
+using System.Reflection;
 using System.Xml;
 using NHibernate.Cfg;
 
@@ -6,17 +7,11 @@ namespace Standings.Web.Tests.Helpers
 {
     public class NHibernateHelper
     {
-        public static Configuration GenerateStubConfiguration(string testDirPath)
+        public static Configuration GenerateStubConfiguration()
         {
-            return new Configuration().Configure(GetNHibernateXmlConfig(testDirPath));
+            var manifestResourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Standings.Web.Tests.Helpers.StubNHibernateApp.config");
+            return new Configuration().Configure(new XmlTextReader(new StreamReader(manifestResourceStream)));
         }
 
-        private static XmlTextReader GetNHibernateXmlConfig(string testDirPath)
-        {
-            var webConfigPath = String.Format(@"{0}\..\..\Standings.Web\web.config", testDirPath);
-            var xdoc = new XmlDocument();
-            xdoc.Load(webConfigPath);
-            return new XmlTextReader(xdoc.DocumentElement.ChildNodes[1].OuterXml, XmlNodeType.Document, null);
-        }
     }
 }
