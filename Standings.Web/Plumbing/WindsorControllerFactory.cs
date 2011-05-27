@@ -11,16 +11,16 @@ namespace Standings.Web.Plumbing
     /// </summary>
     public class WindsorControllerFactory : DefaultControllerFactory
     {
-        private readonly IKernel _kernel;
+        public IKernel Kernel { get; private set; }
 
         public WindsorControllerFactory(IKernel kernel)
         {
-            _kernel = kernel;
+            Kernel = kernel;
         }
 
         public override void ReleaseController(IController controller)
         {
-            _kernel.ReleaseComponent(controller);
+            Kernel.ReleaseComponent(controller);
         }
 
         protected override IController GetControllerInstance(RequestContext requestContext, Type controllerType)
@@ -29,7 +29,7 @@ namespace Standings.Web.Plumbing
             {
                 throw new HttpException(404, string.Format("The controller for path '{0}' could not be found.", requestContext.HttpContext.Request.Path));
             }
-            return (IController)_kernel.Resolve(controllerType);
+            return (IController)Kernel.Resolve(controllerType);
         }
     }
 }

@@ -1,79 +1,56 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using NHibernate;
+using System.Linq.Expressions;
+using System.Linq;
+using Standings.Infrastructure.Persistence;
 
 namespace Standings.Infrastructure.Repositories
 {
-    public class Repository<T> : List<T>, IEnumerable
+    public class Repository<T> : IList<T>, IQueryable<T>
     {
-        public ISession Session { get; set; }
+        public virtual IQueryableSession<T> QueryableSession { get; set; }
 
         #region Implementation of IEnumerable
 
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>1</filterpriority>
-        public new IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return QueryableSession.GetEnumerator();
         }
 
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return GetEnumerator();
+            throw new NotImplementedException();
         }
 
         #endregion
 
         #region Implementation of ICollection<T>
 
-        /// <summary>
-        /// Adds an item to the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <param name="item">The object to add to the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public new void Add(T item)
+        public void Add(T item)
         {
-            base.Add(item);
+            QueryableSession.Save(item);
         }
 
         /// <summary>
         /// Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </summary>
         /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only. </exception>
-        public new void Clear()
+        public void Clear()
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Determines whether the <see cref="T:System.Collections.Generic.ICollection`1"/> contains a specific value.
-        /// </summary>
-        /// <returns>
-        /// true if <paramref name="item"/> is found in the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false.
-        /// </returns>
-        /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
-        public new bool Contains(T item)
+        public bool Contains(T item)
         {
-            throw new NotImplementedException();
+            return QueryableSession.Contains(item);
         }
 
         /// <summary>
         /// Copies the elements of the <see cref="T:System.Collections.Generic.ICollection`1"/> to an <see cref="T:System.Array"/>, starting at a particular <see cref="T:System.Array"/> index.
         /// </summary>
         /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type <paramref name="T"/> cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
-        public new void CopyTo(T[] array, int arrayIndex)
+        public void CopyTo(T[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
@@ -85,20 +62,14 @@ namespace Standings.Infrastructure.Repositories
         /// true if <paramref name="item"/> was successfully removed from the <see cref="T:System.Collections.Generic.ICollection`1"/>; otherwise, false. This method also returns false if <paramref name="item"/> is not found in the original <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
-        public new bool Remove(T item)
+        public bool Remove(T item)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </returns>
-        public new int Count
+        public int Count
         {
-            get { return base.Count; }
+            get { return QueryableSession.Count(); }
         }
 
         /// <summary>
@@ -123,7 +94,7 @@ namespace Standings.Infrastructure.Repositories
         /// The index of <paramref name="item"/> if found in the list; otherwise, -1.
         /// </returns>
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
-        public new int IndexOf(T item)
+        public int IndexOf(T item)
         {
             throw new NotImplementedException();
         }
@@ -132,7 +103,7 @@ namespace Standings.Infrastructure.Repositories
         /// Inserts an item to the <see cref="T:System.Collections.Generic.IList`1"/> at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param><param name="item">The object to insert into the <see cref="T:System.Collections.Generic.IList`1"/>.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
-        public new void Insert(int index, T item)
+        public void Insert(int index, T item)
         {
             throw new NotImplementedException();
         }
@@ -141,22 +112,34 @@ namespace Standings.Infrastructure.Repositories
         /// Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
         /// </summary>
         /// <param name="index">The zero-based index of the item to remove.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
-        public new void RemoveAt(int index)
+        public void RemoveAt(int index)
         {
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Gets or sets the element at the specified index.
-        /// </summary>
-        /// <returns>
-        /// The element at the specified index.
-        /// </returns>
-        /// <param name="index">The zero-based index of the element to get or set.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
-        public new T this[int index]
+        public T this[int index]
         {
-            get { return base[index]; }
-            set { base[index] = value; }
+            get { return (T)QueryableSession.Load(typeof(T), index); }
+            set { throw new NotImplementedException(); }
+        }
+
+        #endregion
+
+        #region Implementation of IQueryable
+
+        public Expression Expression
+        {
+            get { return QueryableSession.Expression; }
+        }
+
+        public Type ElementType
+        {
+            get { return QueryableSession.ElementType; }
+        }
+
+        public IQueryProvider Provider
+        {
+            get { return QueryableSession.Provider; }
         }
 
         #endregion

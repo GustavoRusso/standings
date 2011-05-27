@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Text;
-using System.Collections.Generic;
 using System.Linq;
 using Castle.Core;
-using Castle.Core.Internal;
 using Castle.Windsor;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Standings.Infrastructure.Repositories;
@@ -18,14 +14,17 @@ namespace Standings.Web.Tests.Installers
         [TestMethod]
         public void Install_RegisterAllRepositoryInTheInfrastructureAssembly()
         {
-            var infrastructureAssembly = typeof(CompetitionRepository).Assembly;
+            Type genericRepositoryType = typeof(Repository<>).GetGenericTypeDefinition();
+            var infrastructureAssembly = typeof(Repository<>).Assembly;
             Type[] allRepositories = infrastructureAssembly.GetExportedTypes()
                .Where(t => t.IsClass).Where(t => t.IsAbstract == false)
                .Where(t => t.Namespace.Contains(".Repositories"))
-               .Where(t => t.Is<IList>())
+               .Where(t => (t.IsGenericType && t.GetGenericTypeDefinition() == genericRepositoryType) ||
+                    (t.BaseType.IsGenericType && t.BaseType.GetGenericTypeDefinition() == genericRepositoryType)
+               )
                .OrderBy(t => t.Name)
                .ToArray();
-
+            
             IWindsorContainer containerWithControllers = new WindsorContainer().Install(new RepositoriesInstaller());
 
             Type[] allRegisteredImplementations = containerWithControllers.GetAllImplementation();

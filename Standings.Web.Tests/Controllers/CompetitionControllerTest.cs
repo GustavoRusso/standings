@@ -5,6 +5,7 @@ using Standings.Domain;
 using Standings.Infrastructure.Repositories;
 using Standings.Web.Controllers;
 using Standings.Web.Models.Competition;
+using Standings.Web.Tests.Helpers;
 
 namespace Standings.Web.Tests.Controllers
 {
@@ -15,7 +16,7 @@ namespace Standings.Web.Tests.Controllers
         public void Index_WhenThereAreNoCompetitions_ReturnAnEmptyListOfCompetitions()
         {
             var controller = new CompetitionController();
-            controller.CompetitionRepository = new CompetitionRepository();
+            controller.CompetitionRepository = new CompetitionRepository{QueryableSession = new InMemoryQueryableSession<Competition>()};
 
             var result = controller.Index() as ViewResult;
 
@@ -29,7 +30,8 @@ namespace Standings.Web.Tests.Controllers
         public void Index_WhenExistsAtLeastACompetition_ShowListOfExistentCompetitions()
         {
             var competition = new Competition();
-            var compRep = new CompetitionRepository { competition };
+            var compRep = new CompetitionRepository {QueryableSession = new InMemoryQueryableSession<Competition>()};
+            compRep.Add(competition);
 
             var controller = new CompetitionController();
             controller.CompetitionRepository = compRep;
@@ -45,7 +47,7 @@ namespace Standings.Web.Tests.Controllers
         public void CreateByPOST_WhenExecuteCorrectly_RedirectToIndex()
         {
             var controller = new CompetitionController();
-            controller.CompetitionRepository = new CompetitionRepository();
+            controller.CompetitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
 
             var actionResult = controller.Create(new CreateCompetitionModel());
 
@@ -58,7 +60,7 @@ namespace Standings.Web.Tests.Controllers
         [TestMethod]
         public void CreateByPOST_WhenExecuteCorrectly_AddNewCompetitionToRepository()
         {
-            var competitionRepository = new CompetitionRepository();
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
             var createCompetitionModel = new CreateCompetitionModel();
             createCompetitionModel.Description = "text as description";
 
