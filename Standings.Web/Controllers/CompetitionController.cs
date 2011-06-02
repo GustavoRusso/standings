@@ -60,28 +60,19 @@ namespace Standings.Web.Controllers
             }
         }
 
-        //
         // GET: /Competition/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(CompetitionRepository[id]);
         }
 
-        //
         // POST: /Competition/Delete/5
         [HttpPost]
         public ActionResult Delete(int id, FormCollection collection)
         {
-            try
-            {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            CompetitionRepository.RemoveAt(id);
+            TempData["InformationMessage"] = "The competition was deleted.";
+            return RedirectToAction("Index");
         }
 
     }

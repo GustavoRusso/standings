@@ -108,18 +108,17 @@ namespace Standings.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Removes the <see cref="T:System.Collections.Generic.IList`1"/> item at the specified index.
-        /// </summary>
-        /// <param name="index">The zero-based index of the item to remove.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
+        /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception>
+        /// <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
         public void RemoveAt(int index)
         {
-            throw new NotImplementedException();
+            var entityToRemove = QueryableSession.Load<T>(index);
+            QueryableSession.Delete(entityToRemove);
         }
 
         public T this[int index]
         {
-            get { return (T)QueryableSession.Load(typeof(T), index); }
+            get { return QueryableSession.Load<T>(index); }
             set { throw new NotImplementedException(); }
         }
 

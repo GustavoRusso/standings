@@ -33,5 +33,31 @@ namespace Standings.Infrastructure.Tests.Persistence
 
             mockSession.AssertWasCalled(m => m.Save(entity));
         }
+
+        [TestMethod]
+        public void Load_DelegatesToISession()
+        {
+            var mockSession = MockRepository.GenerateMock<ISession>();
+            const int entityId = 1;
+
+            var queriableSession = new NHibernateQueriableSession<Object>();
+            queriableSession.Session = mockSession;
+            queriableSession.Load<object>(entityId);
+
+            mockSession.AssertWasCalled(m => m.Load<object>(entityId));
+        }
+
+        [TestMethod]
+        public void Delete_DelegatesToISession()
+        {
+            var mockSession = MockRepository.GenerateMock<ISession>();
+            var entity = new object();
+
+            var queriableSession = new NHibernateQueriableSession<Object>();
+            queriableSession.Session = mockSession;
+            queriableSession.Delete(entity);
+
+            mockSession.AssertWasCalled(m => m.Delete(entity));
+        }
     }
 }

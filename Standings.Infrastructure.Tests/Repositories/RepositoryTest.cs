@@ -10,6 +10,19 @@ namespace Standings.Infrastructure.Tests.Repositories
     public class RepositoryTest
     {
         [TestMethod]
+        public void GetItemByIndex_DelegateToQueryableSession()
+        {
+            var mockSession = MockRepository.GenerateMock<IQueryableSession<Object>>();
+            const int entityId = 1;
+
+            var rep = new Repository<object>();
+            rep.QueryableSession = mockSession;
+            var entity = rep[entityId];
+
+            mockSession.AssertWasCalled(m => m.Load<object>(entityId));
+        }
+
+        [TestMethod]
         public void GetEnumerator_DelegateToQueryableSession()
         {
             var mockSession = MockRepository.GenerateMock<IQueryableSession<Object>>();
@@ -19,6 +32,22 @@ namespace Standings.Infrastructure.Tests.Repositories
             rep.GetEnumerator();
 
             mockSession.AssertWasCalled(m => m.GetEnumerator());
+        }
+
+        [TestMethod]
+        public void RemoveAt_RetrieveTheEntityAtTheSpecifiedIndexAndRemoveIt()
+        {
+            var entity = new object();
+            const int entityId = int.MaxValue;
+            var mockSession = MockRepository.GenerateMock<IQueryableSession<Object>>();
+            mockSession.Stub(s => s.Load<object>(entityId)).Return(entity);
+
+            var rep = new Repository<object>();
+            rep.QueryableSession = mockSession;
+            rep.RemoveAt(entityId);
+
+            mockSession.AssertWasCalled(m => m.Load<object>(entityId));
+            mockSession.AssertWasCalled(m => m.Delete(entity));
         }
     }
 }

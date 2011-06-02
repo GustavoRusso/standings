@@ -73,5 +73,52 @@ namespace Standings.Web.Tests.Controllers
             Assert.AreEqual(createCompetitionModel.Description, compCreated.Description);
         }
 
+        [TestMethod]
+        public void Delete_LoadTheCompetitionOnTheViewModel()
+        {
+            var competition = new Competition();
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
+            competitionRepository.Add(competition);
+
+            var controller = new CompetitionController();
+            controller.CompetitionRepository = competitionRepository;
+            var actionResult = controller.Delete(competition.Id);
+
+            var result = actionResult as ViewResult;
+            Assert.IsNotNull(result);
+            Assert.AreEqual(competition, result.Model);
+        }
+
+        [TestMethod]
+        public void DeleteByPOST_WhenExecuteCorrectly_RedirectToIndex()
+        {
+            var competition = new Competition();
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
+            competitionRepository.Add(competition);
+
+            var controller = new CompetitionController();
+            controller.CompetitionRepository = competitionRepository;
+            var actionResult = controller.Delete(competition.Id, new FormCollection());
+
+            var redirectToRouteResult = actionResult as RedirectToRouteResult;
+            Assert.IsNotNull(redirectToRouteResult);
+            Assert.AreEqual("Index", redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual("The competition was deleted.", controller.TempData["InformationMessage"]);
+        }
+
+        [TestMethod]
+        public void DeleteByPOST_WhenExecuteCorrectly_RemoveTheCompetitionFromTheRepository()
+        {
+            var competition = new Competition();
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
+            competitionRepository.Add(competition);
+
+            var controller = new CompetitionController();
+            controller.CompetitionRepository = competitionRepository;
+            controller.Delete(competition.Id, new FormCollection());
+
+            Assert.IsFalse(competitionRepository.Contains(competition),"The competition should have been removed from the repository");
+        }
+
     }
 }

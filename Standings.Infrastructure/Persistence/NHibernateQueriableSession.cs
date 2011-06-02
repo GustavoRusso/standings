@@ -314,23 +314,9 @@ namespace Standings.Infrastructure.Persistence
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Return the persistent instance of the given entity class with the given identifier,
-        ///             assuming that the instance exists.
-        /// </summary>
-        /// <remarks>
-        /// You should not use this method to determine if an instance exists (use a query or
-        ///             <see cref="M:NHibernate.ISession.Get``1(System.Object)"/> instead). Use this only to retrieve an instance that you
-        ///             assume exists, where non-existence would be an actual error.
-        /// </remarks>
-        /// <typeparam name="T">A persistent class</typeparam>
-        /// <param name="id">A valid identifier of an existing persistent instance of the class</param>
-        /// <returns>
-        /// The persistent instance or proxy
-        /// </returns>
         public T1 Load<T1>(object id)
         {
-            throw new NotImplementedException();
+            return Session.Load<T1>(id);
         }
 
         /// <summary>
@@ -583,17 +569,9 @@ namespace Standings.Infrastructure.Persistence
             throw new NotImplementedException();
         }
 
-        /// <summary>
-        /// Remove a persistent instance from the datastore.
-        /// </summary>
-        /// <remarks>
-        /// The argument may be an instance associated with the receiving <c>ISession</c> or a
-        ///             transient instance with an identifier associated with existing persistent state.
-        /// </remarks>
-        /// <param name="obj">The instance to be removed</param>
         public void Delete(object obj)
         {
-            throw new NotImplementedException();
+            Session.Delete(obj);
         }
 
         /// <summary>
