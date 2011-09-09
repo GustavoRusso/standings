@@ -31,6 +31,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.2.5.3\lib\NET40\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="Iesi.Collections">
       <HintPath>..\packages\Iesi.Collections.3.2.0.1002\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
@@ -42,6 +48,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +62,9 @@
     <Compile Include="Repositories\CompetitionRepository.cs" />
     <Compile Include="Persistence\IQueryableSession.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Web\HttpApplicationByConventions.cs" />
+    <Compile Include="Web\DependencyResolver\WindsorDependencyResolver.cs" />
+    <Compile Include="Web\SessionPerRequest\NHibernateSessionPerRequestFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Standings.Domain\Standings.Domain.csproj">
