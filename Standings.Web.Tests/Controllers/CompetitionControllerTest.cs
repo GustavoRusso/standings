@@ -13,12 +13,31 @@ namespace Standings.Web.Tests.Controllers
     public class CompetitionControllerTest
     {
         [TestMethod]
-        public void Index_WhenThereAreNoCompetitions_ReturnAnEmptyListOfCompetitions()
+        public void Index()
+        {
+            var controller = new CompetitionController();
+            var result = controller.Index() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void About()
+        {
+            var controller = new CompetitionController();
+
+            var result = controller.About() as ViewResult;
+
+            Assert.IsNotNull(result);
+        }
+
+        [TestMethod]
+        public void Admin_WhenThereAreNoCompetitions_ReturnAnEmptyListOfCompetitions()
         {
             var controller = new CompetitionController();
             controller.CompetitionRepository = new CompetitionRepository{QueryableSession = new InMemoryQueryableSession<Competition>()};
 
-            var result = controller.Index() as ViewResult;
+            var result = controller.Admin() as ViewResult;
 
             Assert.IsNotNull(result);
             var model = result.Model as IList<Competition>;
@@ -27,7 +46,7 @@ namespace Standings.Web.Tests.Controllers
         }
 
         [TestMethod]
-        public void Index_WhenExistsAtLeastACompetition_ShowListOfExistentCompetitions()
+        public void Admin_WhenExistsAtLeastACompetition_ShowListOfExistentCompetitions()
         {
             var competition = new Competition();
             var compRep = new CompetitionRepository {QueryableSession = new InMemoryQueryableSession<Competition>()};
@@ -35,7 +54,7 @@ namespace Standings.Web.Tests.Controllers
 
             var controller = new CompetitionController();
             controller.CompetitionRepository = compRep;
-            var result = controller.Index() as ViewResult;
+            var result = controller.Admin() as ViewResult;
 
             Assert.IsNotNull(result);
             var model = result.Model as IList<Competition>;
@@ -53,8 +72,8 @@ namespace Standings.Web.Tests.Controllers
 
             var redirectToRouteResult= actionResult as RedirectToRouteResult;
             Assert.IsNotNull(redirectToRouteResult);
-            Assert.AreEqual("Index", redirectToRouteResult.RouteValues["action"]);
-            Assert.AreEqual("The competition was created correctly.", controller.TempData["InformationMessage"]);
+            Assert.AreEqual("Admin", redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual("The competition was successfully created.", controller.TempData["InformationMessage"]);
         }
 
         [TestMethod]
@@ -62,7 +81,7 @@ namespace Standings.Web.Tests.Controllers
         {
             var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
             var createCompetitionModel = new CreateCompetitionModel();
-            createCompetitionModel.Description = "text as description";
+            createCompetitionModel.Name = "name";
 
             var controller = new CompetitionController();
             controller.CompetitionRepository = competitionRepository;
@@ -70,7 +89,21 @@ namespace Standings.Web.Tests.Controllers
 
             Assert.AreEqual(1, competitionRepository.Count);
             var compCreated = competitionRepository[0];
-            Assert.AreEqual(createCompetitionModel.Description, compCreated.Description);
+            Assert.AreEqual(createCompetitionModel.Name, compCreated.Name);
+        }
+
+        [TestMethod]
+        public void CreateByPOST_WhenDoesNotReceiveADescriptionForTheCompetition_AddNewCompetitionToRepositoryWithARandomName()
+        {
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
+
+            var controller = new CompetitionController();
+            controller.CompetitionRepository = competitionRepository;
+            controller.Create(new CreateCompetitionModel());
+
+            Assert.AreEqual(1, competitionRepository.Count);
+            var compCreated = competitionRepository[0];
+            Assert.IsNotNull(compCreated.Name);
         }
 
         [TestMethod]
@@ -102,7 +135,7 @@ namespace Standings.Web.Tests.Controllers
 
             var redirectToRouteResult = actionResult as RedirectToRouteResult;
             Assert.IsNotNull(redirectToRouteResult);
-            Assert.AreEqual("Index", redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual("Admin", redirectToRouteResult.RouteValues["action"]);
             Assert.AreEqual("The competition was deleted.", controller.TempData["InformationMessage"]);
         }
 
@@ -118,6 +151,22 @@ namespace Standings.Web.Tests.Controllers
             controller.Delete(competition.Id, new FormCollection());
 
             Assert.IsFalse(competitionRepository.Contains(competition),"The competition should have been removed from the repository");
+        }
+
+        [TestMethod]
+        public void Details_LoadTheCompetitionOnTheViewModel()
+        {
+            var competition = new Competition();
+            competition.Name = "testingCompetition";
+            var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
+            competitionRepository.Add(competition);
+
+            var controller = new CompetitionController();
+            controller.CompetitionRepository = competitionRepository;
+            var actionResult = controller.Details(competition.Name);
+
+            var result = actionResult as ViewResult;
+            Assert.AreEqual(competition, result.Model);
         }
 
     }

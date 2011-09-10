@@ -46,6 +46,8 @@ namespace Standings.Infrastructure.Tests.Web.SessionPerRequest
         public void OnException_RollbackTheCurrentTransaction()
         {
             var mockCurrentTransaction = MockRepository.GenerateMock<ITransaction>();
+            mockCurrentTransaction.Stub(s => s.IsActive).Return(true);
+
             var stubCurrentSession = MockRepository.GenerateMock<ISession>();
             stubCurrentSession.Stub(s => s.Transaction).Return(mockCurrentTransaction);
             SetCurrentSessionUsingTheDependencyResolver(stubCurrentSession);

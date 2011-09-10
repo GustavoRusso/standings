@@ -32,15 +32,9 @@ namespace Standings.Infrastructure.Persistence
 
         #region Implementation of IQueryable
 
-        /// <summary>
-        /// Gets the expression tree that is associated with the instance of <see cref="T:System.Linq.IQueryable"/>.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Linq.Expressions.Expression"/> that is associated with this instance of <see cref="T:System.Linq.IQueryable"/>.
-        /// </returns>
         public Expression Expression
         {
-            get { throw new NotImplementedException(); }
+            get { return Session.Query<T>().Expression; }
         }
 
         /// <summary>
@@ -54,15 +48,9 @@ namespace Standings.Infrastructure.Persistence
             get { throw new NotImplementedException(); }
         }
 
-        /// <summary>
-        /// Gets the query provider that is associated with this data source.
-        /// </summary>
-        /// <returns>
-        /// The <see cref="T:System.Linq.IQueryProvider"/> that is associated with this data source.
-        /// </returns>
         public IQueryProvider Provider
         {
-            get { throw new NotImplementedException(); }
+            get { return Session.Query<T>().Provider; }
         }
 
         #endregion

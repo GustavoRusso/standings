@@ -29,16 +29,6 @@ namespace Standings.Infrastructure.Web.SessionPerRequest
         {
             var currentSession = System.Web.Mvc.DependencyResolver.Current.GetService<ISession>();
             currentSession.Transaction.Commit();
-
-            //var tx = Session.Transaction;
-            //if (tx != null && tx.IsActive)
-            //{
-            //    var thereWereNoExceptions = filterContext.Exception == null || filterContext.ExceptionHandled;
-            //    if (filterContext.Controller.ViewData.ModelState.IsValid && thereWereNoExceptions)
-            //        Session.Transaction.Commit();
-            //    else
-            //        Session.Transaction.Rollback();
-            //}
         }
 
         public void OnException(ExceptionContext filterContext)

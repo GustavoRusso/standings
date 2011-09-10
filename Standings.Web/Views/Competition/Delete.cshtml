@@ -10,14 +10,14 @@
 <fieldset>
     <legend>Competition</legend>
 
-    <div class="display-label">Description</div>
+    <div class="display-label">Name</div>
     <div class="display-field">
-        @Html.DisplayFor(model => model.Description)
+        @Html.DisplayFor(model => model.Name)
     </div>
 </fieldset>
 @using (Html.BeginForm()) {
     <p>
         <input type="submit" value="Delete" /> |
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to List", "Admin")
     </p>
 }

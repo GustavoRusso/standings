@@ -92,7 +92,7 @@ namespace Standings.Web.Tests.Installers
 
         private Type[] GetPublicClassesFromApplicationAssembly(Predicate<Type> where)
         {
-            return typeof(HomeController).Assembly.GetExportedTypes()
+            return typeof(CompetitionController).Assembly.GetExportedTypes()
                 .Where(t => t.IsClass)
                 .Where(t => t.IsAbstract == false)
                 .Where(where.Invoke)

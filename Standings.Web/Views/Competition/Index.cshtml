@@ -1,32 +1,35 @@
-﻿@model IEnumerable<Standings.Domain.Competition>
-
-@{
-    ViewBag.Title = "Standings - Competitions";
+﻿@{
+    ViewBag.Title = "Index";
 }
-
-<h2>Competitions</h2>
-
-<p>
-    @TempData["InformationMessage"]
-</p>
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table>
-    <tr>
-        <th>Description</th>
-        <th>Actions</th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>@item.Description</td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+<div>
+    <p>
+        Do you have a roadmap to follow? Where are you right now? What is the next step?
+        How many steps are left?
+    </p>
+    <p>
+        There are more persons in your same situation? Do you want to measure against them?
+    </p>
+    <p>
+        Standing is the way to draw your path and keep track of your advances.</p>
+    <p>
+        Measure yourself and compare with others.</p>
+    <p>
+        Create your own competition or join the rush which someone else is already working
+        on.
+    </p>
+    <p>
+        Don't take it easy, but make it fun.</p>
+    <p>
+        Good luck with your standings!
+    </p>
+</div>
+<div>
+    <p>
+        Surely there is something you feel like doing. What are you waiting to start?
+    </p>
+    <p>
+        @using (Html.BeginForm("Create","Competition")) {
+            <input type="submit" value="Create a new competition!" />
+        }
+    </p>
+</div>

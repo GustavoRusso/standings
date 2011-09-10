@@ -59,5 +59,29 @@ namespace Standings.Infrastructure.Tests.Persistence
 
             mockSession.AssertWasCalled(m => m.Delete(entity));
         }
+
+        [TestMethod]
+        public void Provider_ReturnANotNullProvider()
+        {
+            var stubSession = MockRepository.GenerateMock<ISession>();
+
+            var queriableSession = new NHibernateQueriableSession<Object>();
+            queriableSession.Session = stubSession;
+            var provider = queriableSession.Provider;
+            
+            Assert.IsNotNull(provider);
+        }
+
+        [TestMethod]
+        public void Expression_ReturnANotNullExpression()
+        {
+            var stubSession = MockRepository.GenerateMock<ISession>();
+
+            var queriableSession = new NHibernateQueriableSession<Object>();
+            queriableSession.Session = stubSession;
+            var expression = queriableSession.Expression;
+
+            Assert.IsNotNull(expression);
+        }
     }
 }

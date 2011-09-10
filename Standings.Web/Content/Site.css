@@ -246,10 +246,12 @@ nav,
     margin-top: 40px;
 }
 
-div#title {
+div#title a:link, div#title a:active, div#title a:visited, div#title a:hover  {
     display: block;
     float: left;
     text-align: left;
+    text-decoration: none;
+    color: White;
 }
 
 #logindisplay {

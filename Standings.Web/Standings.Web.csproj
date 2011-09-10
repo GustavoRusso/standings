@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CompetitionController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Error\Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -160,8 +159,6 @@
     <Content Include="Scripts\MicrosoftMvcValidation.js" />
     <Content Include="Scripts\MicrosoftMvcValidation.debug.js" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
@@ -183,7 +180,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Competition\Index.cshtml" />
+    <Content Include="Views\Competition\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Competition\Create.cshtml" />
@@ -193,6 +190,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Competition\Delete.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Competition\About.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Competition\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Competition\Details.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

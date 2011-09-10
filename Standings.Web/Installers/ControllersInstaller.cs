@@ -25,7 +25,7 @@ namespace Standings.Web.Installers
         {
             return AllTypes.FromThisAssembly()
                 .BasedOn<IController>()
-                .If(Component.IsInSameNamespaceAs<HomeController>())
+                .If(Component.IsInSameNamespaceAs<CompetitionController>())
                 .If(t => t.Name.EndsWith("Controller"));
         }
     }

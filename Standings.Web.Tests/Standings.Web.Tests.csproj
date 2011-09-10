@@ -73,7 +73,6 @@
     <Compile Include="Installers\RepositoriesInstallerTest.cs" />
     <Compile Include="Plumbing\PersistenceFacilityTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\HomeControllerTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App.config" />

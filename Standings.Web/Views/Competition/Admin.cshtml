@@ -1,0 +1,28 @@
+﻿@model IEnumerable<Standings.Domain.Competition>
+
+@{
+    ViewBag.Title = "Admin";
+}
+
+<h2>Competitions</h2>
+
+<p>
+    @TempData["InformationMessage"]
+</p>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>@Html.ActionLink(@item.Name, "Details", new { id = item.Name })</td>
+        <td>@Html.ActionLink("Delete", "Delete", new { id = item.Id })</td>
+    </tr>
+}
+
+</table>
