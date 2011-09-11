@@ -63,17 +63,20 @@ namespace Standings.Web.Tests.Controllers
         }
 
         [TestMethod]
-        public void CreateByPOST_WhenExecuteCorrectly_RedirectToIndex()
+        public void CreateByPOST_WhenExecuteCorrectly_RedirectToDetailsOfTheNewCompetition()
         {
+            var createCompetitionModel = new CreateCompetitionModel();
+            createCompetitionModel.Name = "competitionName";
+
             var controller = new CompetitionController();
             controller.CompetitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
-
-            var actionResult = controller.Create(new CreateCompetitionModel());
+            var actionResult = controller.Create(createCompetitionModel);
 
             var redirectToRouteResult= actionResult as RedirectToRouteResult;
             Assert.IsNotNull(redirectToRouteResult);
-            Assert.AreEqual("Admin", redirectToRouteResult.RouteValues["action"]);
-            Assert.AreEqual("The competition was successfully created.", controller.TempData["InformationMessage"]);
+            Assert.AreEqual("Details", redirectToRouteResult.RouteValues["action"]);
+            Assert.AreEqual(createCompetitionModel.Name, redirectToRouteResult.RouteValues["id"]);
+            Assert.AreEqual("The competition was successfully created. Now you can add participants and checkpoints to your competition.", controller.TempData["InformationMessage"]);
         }
 
         [TestMethod]
@@ -93,7 +96,7 @@ namespace Standings.Web.Tests.Controllers
         }
 
         [TestMethod]
-        public void CreateByPOST_WhenDoesNotReceiveADescriptionForTheCompetition_AddNewCompetitionToRepositoryWithARandomName()
+        public void CreateByPOST_WhenDoesNotReceiveANameForTheCompetition_AddNewCompetitionToRepositoryWithARandomName()
         {
             var competitionRepository = new CompetitionRepository { QueryableSession = new InMemoryQueryableSession<Competition>() };
 

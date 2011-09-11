@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using System.Web.Routing;
 using Standings.Domain;
 using Standings.Infrastructure.Repositories;
 using Standings.Web.Models.Competition;
@@ -57,8 +58,8 @@ namespace Standings.Web.Controllers
             }
 
             CompetitionRepository.Add(newCompetition);
-            TempData["InformationMessage"] = "The competition was successfully created.";
-            return RedirectToAction("Admin");
+            TempData["InformationMessage"] = "The competition was successfully created. Now you can add participants and checkpoints to your competition.";
+            return RedirectToAction("Details",new {id = newCompetition.Name});
         }
 
         // GET: /Competition/Delete/5
